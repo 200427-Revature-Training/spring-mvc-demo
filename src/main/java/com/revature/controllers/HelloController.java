@@ -30,7 +30,7 @@ public class HelloController {
 	HelloService helloService;
 	
 	@GetMapping
-	@ResponseBody
+	@ResponseBody // returned String should be JSON response
 	public String sayHelloById() {
 		return "Hello " + helloService.getNameById(1) + "!";
 	}
