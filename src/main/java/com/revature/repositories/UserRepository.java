@@ -1,10 +1,12 @@
 package com.revature.repositories;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -33,5 +35,22 @@ public class UserRepository {
 		user.setId(names.size()+1);
 		names.put(user.getId(), user);
 		return user;
+	}
+
+	public User put(User user) {
+		names.put(user.getId(), user);
+		return user;
+	}
+
+	public Collection<User> getUsersOlderThan(Integer olderThan) {
+		LocalDate threshold = LocalDate.now().minus(olderThan, ChronoUnit.YEARS);
+		
+		return names
+			.values()
+			.stream()
+			.distinct()
+			// checks whether users are older than olderThan years old
+			.filter(user -> user.getBirthdate().isBefore(threshold))
+			.collect(Collectors.toList());
 	}
 }
